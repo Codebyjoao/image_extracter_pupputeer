@@ -4,11 +4,22 @@ const fs = require('fs');
 (async () => {
   const browser = await puppeteer.launch({headless: false});
   const page = await browser.newPage();
-  await page.goto('https://www.youtube.com/c/RocketSeat/videos');
+  const search = 'node+js'
+  await page.goto(`https://www.youtube.com/results?search_query=${search}`);
 
-  const imgList = await page.evaluate(() =>{
+  //Pegar imagens e os links
 
-    const nodeList = document.querySelectorAll('#contents img')
+  //listar imagens com os links
+
+  //pegar todos os itens da pagina
+
+  //criar pagina com os videos
+
+  //separar o audio do video
+
+  const elemetsList = await page.evaluate(() =>{
+
+    const nodeList = document.querySelectorAll('#thumbnail img')
     const imgArray = [...nodeList]
 
     const imgList = imgArray.map(img =>({
@@ -16,6 +27,19 @@ const fs = require('fs');
       src: img.src
 
     }))
+
+    const ndList = document.querySelectorAll('#thumbnail')
+    const urlArray =[...ndList]
+
+    const urlList = urlArray.map(url =>({
+
+      href: url.href
+
+    })) 
+
+    const elemetsList = {
+      
+    }
 
     const  neoImagList = []
     for(i in imgList){
@@ -25,16 +49,14 @@ const fs = require('fs');
       }
 
     }
-
-    
-    return neoImagList
+    return neoImagList;
   })
  
-  fs.writeFile('youtuberocket.json', JSON.stringify(imgList, null, 2), err =>{
+  fs.writeFile('youtubesearch.json', JSON.stringify(elemetsList, null, 2), err =>{
       if(err) throw new Error('something went wrong')
 
       console.log('well done')
   })
 
-  await browser.close();
+  //await browser.close();
 })();

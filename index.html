@@ -7,6 +7,10 @@
 </head>
 <body>
     <style>
+        body{
+            background:#202024 ;
+        }
+
         .container {
             display: flex;
             flex-direction: column;
@@ -16,7 +20,7 @@
             list-style: none;
         }
         li img{
-            width: 300px;
+            width: 360px;
             height: auto;
 
             object-fit: cover;
@@ -28,7 +32,7 @@
     <script>
 
         (async() => {
-            const response = await fetch('./youtuberocket.json')
+            const response = await fetch('./youtubesearch.json')
             const data = await response.json()
             
 
