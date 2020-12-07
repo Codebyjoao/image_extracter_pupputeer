@@ -4,7 +4,7 @@ const fs = require('fs');
 (async () => {
   const browser = await puppeteer.launch({headless: false});
   const page = await browser.newPage();
-  const search = 'node+js'
+  const search = 'mc+igu'
   await page.goto(`https://www.youtube.com/results?search_query=${search}`);
 
   //Pegar imagens e os links
@@ -19,8 +19,11 @@ const fs = require('fs');
 
   const elemetsList = await page.evaluate(() =>{
 
-    const nodeList = document.querySelectorAll('#thumbnail img')
+    const nodeList = document.querySelectorAll('#thumbnail img') 
     const imgArray = [...nodeList]
+
+    const ndList = document.querySelectorAll('#thumbnail')
+    const urlArray =[...ndList]
 
     const imgList = imgArray.map(img =>({
       
@@ -28,35 +31,39 @@ const fs = require('fs');
 
     }))
 
-    const ndList = document.querySelectorAll('#thumbnail')
-    const urlArray =[...ndList]
-
     const urlList = urlArray.map(url =>({
 
       href: url.href
 
-    })) 
+    }))
 
-    const elemetsList = {
-      
-    }
-
-    const  neoImagList = []
+    const  neoImgList = []
     for(i in imgList){
       if(imgList[i].src != ""){
         
-        neoImagList.push(imgList[i])
+        neoImgList.push(imgList[i])
       }
 
     }
-    return neoImagList;
+    return [imgList, urlList]
+
   })
+
+  
+  const img = elemetsList[0]
+  const url = elemetsList[1]
  
-  fs.writeFile('youtubesearch.json', JSON.stringify(elemetsList, null, 2), err =>{
+  fs.writeFile('youtubesearch.json', JSON.stringify(img, null, 2), err =>{
       if(err) throw new Error('something went wrong')
 
       console.log('well done')
   })
 
-  //await browser.close();
+  fs.writeFile('youtubesearchlink.json', JSON.stringify(url, null, 2), err =>{
+    if(err) throw new Error('something went wrong')
+
+    console.log('well done')
+})
+
+  await browser.close();
 })();

@@ -16,10 +16,10 @@
             flex-direction: column;
             gap: .4rem;
         }
-        li {
+        a {
             list-style: none;
         }
-        li img{
+        a img{
             width: 360px;
             height: auto;
 
@@ -29,17 +29,30 @@
 
     <div class="container"> </div>
 
+    <audio src="https://www.youtube.com/watch?v=MuO-sP1Ayo4&ab_channel=McIgu" controls autoplay loop>
+        <p>Seu navegador não suporta o elemento audio </p>
+    </audio>
+    <video src="https://www.youtube.com/watch?v=MuO-sP1Ayo4&ab_channel=McIgu" controls>
+        Seu navegador não suporta o elemento <code>video</code>.
+      </video>
     <script>
 
         (async() => {
-            const response = await fetch('./youtubesearch.json')
-            const data = await response.json()
-            
+            let response = await fetch('./youtubesearch.json')
+            let data = await response.json()
 
-            const htmlList = data.map( ({src}) => `<li><img src="${src}"></li>`).join('')
-            console.log(htmlList)
+            let respons = await fetch('./youtubesearchlink.json')
+            let dat = await respons.json()
 
-            document.querySelector('.container').innerHTML = htmlList
+            const lst = []
+
+            for(i in data){
+                
+                let tag = `<a href="${dat[i].href}"><img src="${data[i].src}"></a>`
+                lst.push(tag)
+            }
+
+            document.querySelector('.container').innerHTML = lst
         })()
 
     </script>
